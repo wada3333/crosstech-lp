@@ -223,6 +223,21 @@
     }
     #toast.show { transform: translateY(0); }
 
+    /* Footer */
+    footer {
+      padding: 30px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background-color: var(--bg);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    footer p { margin-bottom: 6px; }
+    .footer-disclaimer {
+      font-size: 0.75rem;
+      opacity: 0.75;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
@@ -414,7 +429,15 @@ function doPost(e) {
     </div>
   </section>
 
-  <div id="toast">お問い合わせを受け付けました。担当者より順次ご連絡いたします。</div>
+  <!-- 最下部フッター（控えめなデモ注記） -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 株式会社クロステック・アーキテクツ All Rights Reserved.</p>
+      <p class="footer-disclaimer">※本サイトは技術デモンストレーション用に作成した架空の企業を題材にしています。</p>
+    </div>
+  </footer>
+
+  <div id="toast">送信が完了しました。お問い合わせありがとうございます！</div>
 
   <script>
     // 1. ダークモード切替
@@ -456,8 +479,8 @@ function doPost(e) {
     const submitBtn = document.getElementById('submitBtn');
     const toast = document.getElementById('toast');
 
-    // ★重要: ステップ2で発行したGASのWeb App URLをここに貼り付けます
-    const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbzXKq47NPRrMqerqZXFv2J7WADaeHGgVB7FIRMKG194hUOPkeHVxeFTysrUU_L23LqFew/exec";
+    // ★重要: 設定済みのGAS Web App URLをここに指定してください
+    const GAS_ENDPOINT_URL = "YOUR_GAS_WEB_APP_URL_HERE";
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -474,12 +497,11 @@ function doPost(e) {
 
       try {
         if (GAS_ENDPOINT_URL === "YOUR_GAS_WEB_APP_URL_HERE") {
-          // デモ用ディレイ
           await new Promise(r => setTimeout(r, 1000));
         } else {
           await fetch(GAS_ENDPOINT_URL, {
             method: 'POST',
-            mode: 'no-cors', // CORS回避のための標準指定
+            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
