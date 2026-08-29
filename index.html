@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式会社クロステック・アーキテクツ | 次世代バックオフィスDX</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    body.dark {
+      --bg: #0b0f19;
+      --bg-alt: #111827;
+      --card-bg: #1f2937;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --border: #374151;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Header & Nav */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      padding: 15px 0;
+    }
+    .nav-wrap { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { color: #fff; font-weight: bold; font-size: 1.1rem; }
+    .theme-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      height: 85vh;
+      min-height: 550px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+    }
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 1;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.9) 100%);
+      z-index: 2;
+    }
+    .hero-content { position: relative; z-index: 3; max-width: 800px; padding: 0 20px; }
+    .hero h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 20px; }
+    .hero p { font-size: 1.2rem; color: #cbd5e1; margin-bottom: 30px; }
+    .btn-cta {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-cta:hover { background: var(--primary-hover); }
+
+    /* Section Base */
+    section { padding: 80px 0; }
+    .section-alt { background-color: var(--bg-alt); }
+    .sec-title { text-align: center; margin-bottom: 50px; }
+    .sec-title h2 { font-size: 2rem; margin-bottom: 10px; }
+    .sec-title p { color: var(--text-muted); }
+
+    /* Two-col layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .img-box img { width: 100%; border-radius: 12px; box-shadow: var(--card-shadow); display: block; }
+    .card-list { display: flex; flex-direction: column; gap: 15px; }
+    .item-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+    .item-card h3 { color: var(--primary); margin-bottom: 5px; }
+
+    /* Interactive Simulator */
+    .sim-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .sim-group { margin-bottom: 25px; }
+    .sim-group label { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; }
+    .sim-group input[type="range"] { width: 100%; cursor: pointer; }
+    .sim-result {
+      background: rgba(37, 99, 235, 0.08);
+      border: 2px dashed var(--primary);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .sim-result-num { font-size: 2.2rem; font-weight: bold; color: var(--primary); }
+
+    /* Code Block Demo */
+    .code-box {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+      color: #93c5fd;
+      font-family: monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    /* Form */
+    .form-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 35px;
+      max-width: 650px;
+      margin: 0 auto;
+      box-shadow: var(--card-shadow);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #10b981;
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    #toast.show { transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .hero { height: auto; padding: 120px 0 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-wrap">
+      <div class="nav-logo">CROSSTECH ARCHITECTS</div>
+      <button class="theme-btn" id="themeToggle">🌓 表示切替</button>
+    </div>
+  </header>
+
+  <!-- 1. FV (動画) -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="hero-video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>バックオフィスを、<br>次世代のエンジンへ。</h1>
+      <p>属人化した業務フローを解体。GAS、AI、SaaS連携APIを駆使し、自律的な業務基盤を構築します。</p>
+      <a href="#contact" class="btn-cta">無料シミュレーション・相談</a>
+    </div>
+  </section>
+
+  <!-- 2. Pain (画像1) -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="sec-title">
+        <h2>こんな課題を抱えていませんか？</h2>
+        <p>業務拡大に伴うアナログ作業の限界</p>
+      </div>
+      <div class="grid-2">
+        <div class="img-box">
+          <img src="pain.png" alt="アナログ作業に追われる様子">
+        </div>
+        <div class="card-list">
+          <div class="item-card">
+            <h3>分断されたSaaSツール</h3>
+            <p>複数ツールへの二重入力・手作業の転記に毎月膨大な時間が奪われている。</p>
+          </div>
+          <div class="item-card">
+            <h3>AI導入の人材不足</h3>
+            <p>AIを活用したいが、プロンプト設計やAPI連携を扱えるエンジニアが社内にいない。</p>
+          </div>
+          <div class="item-card">
+            <h3>ヒューマンエラーと手戻り</h3>
+            <p>目視確認によるチェック漏れや差し戻しが日常化し、コア業務に集中できない。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Solution (画像2) -->
+  <section>
+    <div class="container">
+      <div class="sec-title">
+        <h2>クロステックの自動化ソリューション</h2>
+        <p>単なる制作にとどまらない、一気通貫のシステム構築[cite: 3]</p>
+      </div>
+      <div class="grid-2">
+        <div class="card-list">
+          <div class="item-card">
+            <h3>営業・顧客管理自動化</h3>
+            <p>CRM/SFAとWebをAPI連携し、リード獲得から初期対応までを完全自動化[cite: 3]。</p>
+          </div>
+          <div class="item-card">
+            <h3>経理・財務AI化</h3>
+            <p>AI-OCRによる請求書読み取りと、クラウド会計ソフトへの自動仕訳・連携[cite: 3]。</p>
+          </div>
+          <div class="item-card">
+            <h3>自律型AIアシスタント構築</h3>
+            <p>社内規定や過去ナレッジを参照し、問い合わせを自律解決するボットをデプロイ。</p>
+          </div>
+        </div>
+        <div class="img-box">
+          <img src="solution.png" alt="自動化ダッシュボードUI">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Interactive ROI Simulator -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="sec-title">
+        <h2>ROI（費用対効果）シミュレーター</h2>
+        <p>貴社における月間のコスト削減効果を試算します</p>
+      </div>
+      <div class="sim-box">
+        <div class="sim-group">
+          <label>
+            <span>月間のアナログ作業時間</span>
+            <span id="hoursVal">100 時間</span>
+          </label>
+          <input type="range" id="hoursInput" min="10" max="500" value="100" step="5">
+        </div>
+        <div class="sim-group">
+          <label>
+            <span>担当者の平均時給</span>
+            <span id="wageVal">2,000 円</span>
+          </label>
+          <input type="range" id="wageInput" min="1000" max="5000" value="2000" step="100">
+        </div>
+        <div class="sim-result">
+          <p>推定される月間コスト削減効果（自動化率80%想定）</p>
+          <div class="sim-result-num" id="costResult">¥160,000 / 月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Future & Tech Demo (画像3) -->
+  <section>
+    <div class="container">
+      <div class="sec-title">
+        <h2>導入後の姿と高信頼の技術基盤</h2>
+        <p>セキュアな設計と確かな自動化技術</p>
+      </div>
+      <div class="grid-2">
+        <div class="img-box">
+          <img src="future.png" alt="効率化されたオフィス">
+        </div>
+        <div>
+          <h3>堅牢なAPI連携・データ保護</h3>
+          <p>入力値のサニタイズ処理、非同期Webhook受付など、セキュリティ基準を満たした開発を提供します。</p>
+          <div class="code-box">
+            <button class="copy-btn" id="copyCode">コピー</button>
+            <pre><code>// フォーム受付用 GAS Endpoint
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const sanitized = sanitizeInput(data);
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Leads");
+  sheet.appendRow([new Date(), sanitized.name, sanitized.email, sanitized.company]);
+  return ContentService.createTextOutput(JSON.stringify({status: "success"}));
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Form (GASスプレッドシート連携) -->
+  <section id="contact" class="section-alt">
+    <div class="container">
+      <div class="sec-title">
+        <h2>お問い合わせ・無料相談</h2>
+        <p>送信すると非同期通信で即座にスプレッドシートへ安全に記録されます</p>
+      </div>
+      <div class="form-box">
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="company">貴社名 *</label>
+            <input type="text" id="company" name="company" required placeholder="例：株式会社サンプル">
+          </div>
+          <div class="form-group">
+            <label for="name">お名前 *</label>
+            <input type="text" id="name" name="name" required placeholder="例：山田 太郎">
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス *</label>
+            <input type="email" id="email" name="email" required placeholder="name@example.com">
+          </div>
+          <div class="form-group">
+            <label for="category">ご相談内容 *</label>
+            <select id="category" name="category" required>
+              <option value="">選択してください</option>
+              <option value="SaaS連携・GAS自動化">SaaS連携・GAS自動化</option>
+              <option value="AIチャットボット導入">AIチャットボット導入</option>
+              <option value="業務フローDXコンサル">業務フローDXコンサル</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">具体的なご相談内容</label>
+            <textarea id="message" name="message" rows="4" placeholder="現状の課題などをご記入ください"></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span>送信する</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast">お問い合わせを受け付けました。担当者より順次ご連絡いたします。</div>
+
+  <script>
+    // 1. ダークモード切替
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+    // 2. ROI シミュレーター
+    const hoursInput = document.getElementById('hoursInput');
+    const wageInput = document.getElementById('wageInput');
+    const hoursVal = document.getElementById('hoursVal');
+    const wageVal = document.getElementById('wageVal');
+    const costResult = document.getElementById('costResult');
+
+    function updateROI() {
+      const h = parseInt(hoursInput.value);
+      const w = parseInt(wageInput.value);
+      hoursVal.textContent = `${h} 時間`;
+      wageVal.textContent = `${w.toLocaleString()} 円`;
+      // 計算ロジック: 時間 × 時給 × 0.8 (80%削減)
+      const saved = Math.round(h * w * 0.8);
+      costResult.textContent = `¥${saved.toLocaleString()} / 月`;
+    }
+    hoursInput.addEventListener('input', updateROI);
+    wageInput.addEventListener('input', updateROI);
+
+    // 3. コードコピー
+    document.getElementById('copyCode').addEventListener('click', function() {
+      const code = document.querySelector('.code-box code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        this.textContent = 'コピー完了!';
+        setTimeout(() => { this.textContent = 'コピー'; }, 2000);
+      });
+    });
+
+    // 4. フォーム非同期送信 (GAS連携)
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const toast = document.getElementById('toast');
+
+    // ★重要: ステップ2で発行したGASのWeb App URLをここに貼り付けます
+    const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbzXKq47NPRrMqerqZXFv2J7WADaeHGgVB7FIRMKG194hUOPkeHVxeFTysrUU_L23LqFew/exec";
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '送信中...';
+
+      const payload = {
+        company: form.company.value,
+        name: form.name.value,
+        email: form.email.value,
+        category: form.category.value,
+        message: form.message.value
+      };
+
+      try {
+        if (GAS_ENDPOINT_URL === "YOUR_GAS_WEB_APP_URL_HERE") {
+          // デモ用ディレイ
+          await new Promise(r => setTimeout(r, 1000));
+        } else {
+          await fetch(GAS_ENDPOINT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // CORS回避のための標準指定
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        // トースト通知
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        form.reset();
+        updateROI();
+      } catch (err) {
+        alert('送信に失敗しました。もう一度お試しください。');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '送信する';
+      }
+    });
+  </script>
+</body>
+</html>
