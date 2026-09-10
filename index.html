@@ -200,6 +200,7 @@
       min-width: 0;
     }
     .form-group { margin-bottom: 20px; }
+    .hp-field { position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; }
     .form-group label { display: block; margin-bottom: 6px; font-weight: bold; }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
@@ -426,6 +427,10 @@ function doPost(e) {
             <label for="message">具体的なご相談内容</label>
             <textarea id="message" name="message" rows="4" placeholder="現状の課題などをご記入ください"></textarea>
           </div>
+          <div class="form-group hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn-submit" id="submitBtn">
             <span>送信する</span>
           </button>
@@ -482,6 +487,7 @@ function doPost(e) {
     const form = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const toast = document.getElementById('toast');
+    const formLoadedAt = Date.now();
 
     // ★重要: 設定済みのGAS Web App URLをここに指定してください
     const GAS_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbyDhjj8w-14Ml85x0qTBFCKXmVFSoz0Ds4P0B_wV5nayhzj6aKQq6bGpcBA22EKWx14/exec";
@@ -496,7 +502,9 @@ function doPost(e) {
         name: form.name.value,
         email: form.email.value,
         category: form.category.value,
-        message: form.message.value
+        message: form.message.value,
+        website: form.website.value,
+        elapsed: Date.now() - formLoadedAt
       };
 
       try {
