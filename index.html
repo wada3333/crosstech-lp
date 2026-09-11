@@ -376,16 +376,32 @@
         </div>
         <div>
           <h3>堅牢なAPI連携・データ保護</h3>
-          <p>入力値のサニタイズ処理、非同期Webhook受付など、セキュリティ基準を満たした開発を提供します。</p>
+          <p>ボット判定・入力チェック・連投制限を通過した送信だけを記録する、セキュリティ基準を満たした開発を提供します。</p>
           <div class="code-box">
             <button class="copy-btn" id="copyCode">コピー</button>
             <pre><code>// フォーム受付用 GAS Endpoint
 function doPost(e) {
-  const data = JSON.parse(e.postData.contents);
-  const sanitized = sanitizeInput(data);
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Leads");
-  sheet.appendRow([new Date(), sanitized.name, sanitized.email, sanitized.company]);
-  return ContentService.createTextOutput(JSON.stringify({status: "success"}));
+  const p = JSON.parse(e.postData.contents);
+
+  // ① ボット判定：隠し項目への入力・3秒未満の送信は記録しない
+  if (p.website || Number(p.elapsed) &lt; 3000) return ok();
+
+  // ② 入力チェック：必須項目・メール形式・文字数上限
+  if (!isValid(p)) return ok();
+
+  // ③ 連投制限：同じメールアドレスは10分に1回まで
+  if (isRateLimited(p.email)) return ok();
+
+  // ④ 同時書き込みを直列化し、数式として実行されない形に無害化して記録
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    const values = [p.company, p.name, p.email, p.category, p.message].map(sanitize);
+    SpreadsheetApp.getActiveSheet().appendRow([new Date(), ...values]);
+  } finally {
+    lock.releaseLock();
+  }
+  return ok();
 }</code></pre>
           </div>
         </div>
